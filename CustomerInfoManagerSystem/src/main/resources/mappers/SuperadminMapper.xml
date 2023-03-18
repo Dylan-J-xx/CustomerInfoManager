@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.one.mapper.SuperadminMapper">
+    <resultMap id="BaseResultMap" type="com.one.model.Superadmin">
+        <result column="superadminname" property="superadminname" jdbcType="VARCHAR"/>
+        <result column="superadminpassword" property="superadminpassword" jdbcType="VARCHAR"/>
+        <result column="superadminid" property="superadminid" jdbcType="INTEGER"/>
+        <result column="superadminaccount" property="superadminaccount" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="login" resultMap="BaseResultMap" parameterType="com.one.model.Superadmin">
+        select *
+        from superadmin
+        where superadminaccount = #{superadminaccount}
+          and superadminpassword = #{superadminpassword}
+    </select>
+
+    <select id="selectbyaccount" resultMap="BaseResultMap" parameterType="String">
+        select *
+        from superadmin
+        where superadminaccount = #{superadminaccount}
+    </select>
+
+    <insert id="insert" parameterType="com.one.model.Superadmin">
+        insert into superadmin (superadminname, superadminpassword,
+                                superadminid, superadminaccount)
+        values (#{superadminname,jdbcType=VARCHAR}, #{superadminpassword,jdbcType=VARCHAR},
+                #{superadminid,jdbcType=INTEGER}, #{superadminaccount,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.one.model.Superadmin">
+        insert into superadmin
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="superadminname != null">
+                superadminname,
+            </if>
+            <if test="superadminpassword != null">
+                superadminpassword,
+            </if>
+            <if test="superadminid != null">
+                superadminid,
+            </if>
+            <if test="superadminaccount != null">
+                superadminaccount,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="superadminname != null">
+                #{superadminname,jdbcType=VARCHAR},
+            </if>
+            <if test="superadminpassword != null">
+                #{superadminpassword,jdbcType=VARCHAR},
+            </if>
+            <if test="superadminid != null">
+                #{superadminid,jdbcType=INTEGER},
+            </if>
+            <if test="superadminaccount != null">
+                #{superadminaccount,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+</mapper>

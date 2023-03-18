@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.one.mapper.ServiceMapper">
+    <resultMap id="BaseResultMap" type="com.one.model.ServiceLinkUandM">
+        <id column="serviceid" property="serviceid" jdbcType="INTEGER"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+        <result column="date" property="date" jdbcType="TIMESTAMP"/>
+        <result column="time" property="time" jdbcType="BIGINT"/>
+        <result column="satisfaction" property="satisfaction" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        serviceid
+        , type, date, time, satisfaction
+    </sql>
+    <select id="selectByserviceid" resultMap="BaseResultMap" parameterType="Integer">
+        select *
+        from service
+                 join service_u_m on service.serviceid = service_u_m.serviceid
+                 join manager_info on manager_info.managerid = service_u_m.managerid
+                 join user_info on user_info.userid = service_u_m.userid
+        where service.serviceid = #{serviceid}
+    </select>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        select *
+        from service
+                 join service_u_m on service.serviceid = service_u_m.serviceid
+                 join manager_info on manager_info.managerid = service_u_m.managerid
+                 join user_info on user_info.userid = service_u_m.userid
+    </select>
+    <select id="selectByserviceName" resultMap="BaseResultMap" parameterType="String">
+        select *
+        from service
+                 join service_u_m on service.serviceid = service_u_m.serviceid
+                 join manager_info on manager_info.managerid = service_u_m.managerid
+                 join user_info on user_info.userid = service_u_m.userid
+        where concat_ws(service.serviceid, type, date, time, satisfaction, username, manager_info.managername) like
+              "%"#{serviceName}"%"
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from service
+        where serviceid = #{serviceid,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from service
+        where serviceid = #{serviceid,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.one.model.Service">
+        insert into service (serviceid, type, date,
+                             time, satisfaction)
+        values (#{serviceid,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{date,jdbcType=TIMESTAMP},
+                #{time,jdbcType=BIGINT}, #{satisfaction,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.one.model.Service">
+        insert into service
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="serviceid != null">
+                serviceid,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="date != null">
+                date,
+            </if>
+            <if test="time != null">
+                time,
+            </if>
+            <if test="satisfaction != null">
+                satisfaction,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="serviceid != null">
+                #{serviceid,jdbcType=INTEGER},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="date != null">
+                #{date,jdbcType=TIMESTAMP},
+            </if>
+            <if test="time != null">
+                #{time,jdbcType=BIGINT},
+            </if>
+            <if test="satisfaction != null">
+                #{satisfaction,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.one.model.Service">
+        update service
+        <set>
+            <if test="type != null">
+                type = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="date != null">
+                date = #{date,jdbcType=TIMESTAMP},
+            </if>
+            <if test="time != null">
+                time = #{time,jdbcType=BIGINT},
+            </if>
+            <if test="satisfaction != null">
+                satisfaction = #{satisfaction,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where serviceid = #{serviceid,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.one.model.Service">
+        update service
+        set type         = #{type,jdbcType=VARCHAR},
+            date         = #{date,jdbcType=TIMESTAMP},
+            time         = #{time,jdbcType=BIGINT},
+            satisfaction = #{satisfaction,jdbcType=VARCHAR}
+        where serviceid = #{serviceid,jdbcType=INTEGER}
+    </update>
+</mapper>

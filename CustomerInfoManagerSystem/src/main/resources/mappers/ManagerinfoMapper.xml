@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.one.mapper.ManagerInfoMapper">
+    <resultMap id="BaseResultMap" type="com.one.model.ManagerInfo">
+        <id column="managerid" property="managerid" jdbcType="INTEGER"/>
+        <result column="managername" property="managername" jdbcType="VARCHAR"/>
+        <result column="managerpassword" property="managerpassword" jdbcType="VARCHAR"/>
+        <result column="manageremail" property="manageremail" jdbcType="VARCHAR"/>
+        <result column="salt" property="salt" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="VARCHAR"/>
+        <result column="birthdate" property="birthdate" jdbcType="TIMESTAMP"/>
+        <result column="tel" property="tel" jdbcType="BIGINT"/>
+        <result column="education" property="education" jdbcType="VARCHAR"/>
+        <result column="IDcard" property="idcard" jdbcType="BIGINT"/>
+        <result column="other" property="other" jdbcType="VARCHAR"/>
+        <result column="manageraccount" property="manageraccount" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        managerid
+        , managername, managerpassword, manageremail, salt, sex, birthdate, tel,
+    education, IDcard, other, manageraccount
+    </sql>
+    <select id="selectbyaccount" resultMap="BaseResultMap" parameterType="String">
+        select *
+        from manager_info
+        where manageraccount = #{manageraccount}
+    </select>
+    <select id="findAll" resultMap="BaseResultMap">
+        select *
+        from manager_info
+    </select>
+    <select id="selectBymanagerName" resultMap="BaseResultMap" parameterType="String">
+        SELECT *
+        FROM manager_info
+        WHERE CONCAT_WS(managerid, managername,
+                        manageremail, salt, sex,
+                        birthdate, tel, education,
+                        IDcard, other, manageraccount) LIKE "%"#{string}"%"
+    </select>
+    <select id="getStaffByUserName" resultMap="BaseResultMap" parameterType="com.one.model.ManagerInfo">
+        select *
+        from manager_info
+        where manageraccount = #{mangeraccount}
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from manager_info
+        where managerid = #{managerid,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from manager_info
+        where managerid = #{managerid,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.one.model.ManagerInfo">
+        insert into manager_info (managerid, managername, managerpassword,
+                                  manageremail, salt, sex,
+                                  birthdate, tel, education,
+                                  IDcard, other, manageraccount)
+        values (#{managerid,jdbcType=INTEGER}, #{managername,jdbcType=VARCHAR}, #{managerpassword,jdbcType=VARCHAR},
+                #{manageremail,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR},
+                #{birthdate,jdbcType=TIMESTAMP}, #{tel,jdbcType=BIGINT}, #{education,jdbcType=VARCHAR},
+                #{idcard,jdbcType=BIGINT}, #{other,jdbcType=VARCHAR}, #{manageraccount,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.one.model.ManagerInfo">
+        insert into manager_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="managerid != null">
+                managerid,
+            </if>
+            <if test="managername != null">
+                managername,
+            </if>
+            <if test="managerpassword != null">
+                managerpassword,
+            </if>
+            <if test="manageremail != null">
+                manageremail,
+            </if>
+            <if test="salt != null">
+                salt,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="birthdate != null">
+                birthdate,
+            </if>
+            <if test="tel != null">
+                tel,
+            </if>
+            <if test="education != null">
+                education,
+            </if>
+            <if test="idcard != null">
+                IDcard,
+            </if>
+            <if test="other != null">
+                other,
+            </if>
+            <if test="manageraccount != null">
+                manageraccount,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="managerid != null">
+                #{managerid,jdbcType=INTEGER},
+            </if>
+            <if test="managername != null">
+                #{managername,jdbcType=VARCHAR},
+            </if>
+            <if test="managerpassword != null">
+                #{managerpassword,jdbcType=VARCHAR},
+            </if>
+            <if test="manageremail != null">
+                #{manageremail,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null">
+                #{salt,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                #{sex,jdbcType=VARCHAR},
+            </if>
+            <if test="birthdate != null">
+                #{birthdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="tel != null">
+                #{tel,jdbcType=BIGINT},
+            </if>
+            <if test="education != null">
+                #{education,jdbcType=VARCHAR},
+            </if>
+            <if test="idcard != null">
+                #{idcard,jdbcType=BIGINT},
+            </if>
+            <if test="other != null">
+                #{other,jdbcType=VARCHAR},
+            </if>
+            <if test="manageraccount != null">
+                #{manageraccount,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.one.model.ManagerInfo">
+        update manager_info
+        <set>
+            <if test="managername != null">
+                managername = #{managername,jdbcType=VARCHAR},
+            </if>
+            <if test="managerpassword != null">
+                managerpassword = #{managerpassword,jdbcType=VARCHAR},
+            </if>
+            <if test="manageremail != null">
+                manageremail = #{manageremail,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null">
+                salt = #{salt,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                sex = #{sex,jdbcType=VARCHAR},
+            </if>
+            <if test="birthdate != null">
+                birthdate = #{birthdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="tel != null">
+                tel = #{tel,jdbcType=BIGINT},
+            </if>
+            <if test="education != null">
+                education = #{education,jdbcType=VARCHAR},
+            </if>
+            <if test="idcard != null">
+                IDcard = #{idcard,jdbcType=BIGINT},
+            </if>
+            <if test="other != null">
+                other = #{other,jdbcType=VARCHAR},
+            </if>
+            <if test="manageraccount != null">
+                manageraccount = #{manageraccount,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where managerid = #{managerid,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.one.model.ManagerInfo">
+        update manager_info
+        set managername     = #{managername,jdbcType=VARCHAR},
+            managerpassword = #{managerpassword,jdbcType=VARCHAR},
+            manageremail    = #{manageremail,jdbcType=VARCHAR},
+            salt            = #{salt,jdbcType=VARCHAR},
+            sex             = #{sex,jdbcType=VARCHAR},
+            birthdate       = #{birthdate,jdbcType=TIMESTAMP},
+            tel             = #{tel,jdbcType=BIGINT},
+            education       = #{education,jdbcType=VARCHAR},
+            IDcard          = #{idcard,jdbcType=BIGINT},
+            other           = #{other,jdbcType=VARCHAR},
+            manageraccount  = #{manageraccount,jdbcType=VARCHAR}
+        where managerid = #{managerid,jdbcType=INTEGER}
+    </update>
+</mapper>
